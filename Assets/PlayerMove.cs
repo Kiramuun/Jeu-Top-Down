@@ -29,10 +29,24 @@ public class PlayerMove : MonoBehaviour
 
         _movementInput = new Vector2(horizontal, vertical).normalized;
 
+        /*if( _movementInput.sqrMagnitude > _speed)
+        {
+            _animatorRef.SetFloat("dirX", orientation.x );
+            _animatorRef.SetFloat("dirY", orientation.y );
+        }*/
+
+        //Le personnage fais une roulade !
         if ((Input.GetButtonDown("Jump")) && !_animatorRef.GetBool("touchRoll"))
         {
             _animatorRef.SetBool("touchRoll", true);
         }
+
+        //Fais tournez le personnage sur lui meme!
+        if ((Input.GetButtonDown("Turn")) && !_animatorRef.GetBool("touchTurn"))
+        {
+            _animatorRef.SetBool("touchTurn", true);
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift)) { _speed *=2f; }
         if (Input.GetKeyUp(KeyCode.LeftShift)) { _speed /=2f; }
 
@@ -49,6 +63,6 @@ public class PlayerMove : MonoBehaviour
 
         Vector2 velocity = _movementInput * _speed;
         _rigidB.velocity = velocity;
-        _animatorRef.SetFloat("Speed", Mathf.Abs(_rigidB.velocity.x));
+        _animatorRef.SetFloat("Speed", Mathf.Abs(_rigidB.velocity.magnitude)) ;
     }
 }
